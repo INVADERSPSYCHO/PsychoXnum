@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # =====================================================
 # PSYCHOPATHMC - KABOOM MODE (3000 CONCURRENT)
-# Isme VPS ki full power use karo
+# FULL 9 SERIES (100 crore) - 10 digit numbers
 # =====================================================
 
 import os
@@ -14,11 +14,11 @@ from psycopg2.extras import execute_values
 # ========== CONFIG ==========
 DATABASE_URL = "postgresql://neondb_owner:npg_wzV5qXtDANb7@ep-wild-breeze-azdi9w7w-pooler.c-3.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 API_URL = "https://number-info-api-2.vercel.app/number?num={}"
-CONCURRENT = 3000  # 🔥🔥🔥 3000 parallel - FULL POWER
+CONCURRENT = 3000  # 🔥🔥🔥 3000 parallel
 
-# 🔥 FULL 9 SERIES (100 crore)
-START = 9000000000
-END = 9999999999
+# 🔥 FIXED: FULL 9 SERIES (100 crore)
+START = 9000000000   # ✅ 10 digit
+END = 9999999999     # ✅ 10 digit
 
 # ========== DATABASE SETUP ==========
 def init_db():
@@ -106,11 +106,10 @@ async def main():
     start_time = datetime.now()
     
     print(f"🔄 Full 9 Series: {START} to {END}")
-    print(f"📊 Total numbers: {END - START + 1}")
+    print(f"📊 Total numbers: {END - START + 1:,}")
     print(f"⚡ Concurrent: {CONCURRENT} (KABOOM MODE)")
     print(f"🔄 Resuming from: {start}")
     
-    # Increase limits for high concurrency
     connector = aiohttp.TCPConnector(limit=CONCURRENT, ttl_dns_cache=300)
     timeout = aiohttp.ClientTimeout(total=15)
     
@@ -129,15 +128,14 @@ async def main():
                 saved = save_bulk(all_records, conn)
                 total_saved += saved
             
-            # Progress every 100,000 numbers
             if i % 100000 == 0:
                 elapsed = (datetime.now() - start_time).total_seconds()
                 rate = (i - start) / elapsed if elapsed > 0 else 0
                 remaining = (end - i) / rate if rate > 0 else 0
-                print(f"📊 Progress: {i} | Saved: {total_saved} | Rate: {rate:.1f}/sec | Remaining: {remaining/3600:.1f}h")
+                print(f"📊 Progress: {i:,} | Saved: {total_saved:,} | Rate: {rate:.1f}/sec | Remaining: {remaining/3600:.1f}h")
     
     conn.close()
-    print(f"\n✅ Complete! Total records saved: {total_saved}")
+    print(f"\n✅ Complete! Total records saved: {total_saved:,}")
 
 if __name__ == "__main__":
     asyncio.run(main())
